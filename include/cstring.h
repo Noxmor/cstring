@@ -130,6 +130,8 @@ bool cstring_is_sso(const cstring_t* str);
 
 const char* cstring_cstr(const cstring_t* str);
 
+char cstring_at(const cstring_t* str, size_t idx);
+
 #ifdef CSTRING_IMPLEMENTATION
 
 // ######################
@@ -223,6 +225,16 @@ const char* cstring_cstr(const cstring_t* str)
     }
 
     return str->data.heap;
+}
+
+char cstring_at(const cstring_t* str, size_t idx)
+{
+    if (cstring_is_sso(str))
+    {
+        return str->data.sso[idx];
+    }
+
+    return str->data.heap[idx];
 }
 
 #endif

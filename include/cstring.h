@@ -110,6 +110,8 @@ cstring_t cstring_empty(void);
 
 cstring_t cstring_from(const char* str);
 
+void cstring_free(cstring_t* str);
+
 // +------------+
 // | PROPERTIES |
 // +------------+
@@ -165,6 +167,16 @@ cstring_t cstring_from(const char* str)
     }
 
     return s;
+}
+
+void cstring_free(cstring_t* str)
+{
+    if (!cstring_is_sso(str))
+    {
+        CSTRING_FREE(str->data.heap);
+    }
+
+    *str = cstring_empty();
 }
 
 // +------------+

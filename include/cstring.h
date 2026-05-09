@@ -1,4 +1,59 @@
 #ifndef CSTRING_H
 #define CSTRING_H
 
+#include <stdint.h>
+
+// ##################
+// ### PUBLIC API ###
+// ##################
+
+// +---------------+
+// | HELPER MACROS |
+// +---------------+
+
+#define __CSTRING_STRINGIFY_IMPL(x) #x
+#define __CSTRING_STRINGIFY(x) __CSTRING_STRINGIFY_IMPL(x)
+
+#define __CSTRING_VERSION_MAJOR_SHIFT 16
+#define __CSTRING_VERSION_MINOR_SHIFT 8
+#define __CSTRING_VERSION_PATCH_SHIFT 0
+
+#define __CSTRING_VERSION_MAJOR_MASK 0xFFFF
+#define __CSTRING_VERSION_MINOR_MASK 0xFF
+#define __CSTRING_VERSION_PATCH_MASK 0xFF
+
+// +------------+
+// | VERSIONING |
+// +------------+
+
+typedef uint32_t cstring_version_t;
+
+#define CSTRING_VERSION_MAJOR 0
+#define CSTRING_VERSION_MINOR 0
+#define CSTRING_VERSION_PATCH 0
+
+#define CSTRING_VERSION_MAKE(major, minor, patch) \
+    (((cstring_version_t) (major) << __CSTRING_VERSION_MAJOR_SHIFT) | \
+     ((cstring_version_t) (minor) << __CSTRING_VERSION_MINOR_SHIFT) | \
+     ((cstring_version_t) (patch) << __CSTRING_VERSION_PATCH_SHIFT))
+
+#define CSTRING_VERSION_MAJOR_OF(v) \
+    (((v) >> __CSTRING_VERSION_MAJOR_SHIFT) & __CSTRING_VERSION_MAJOR_MASK)
+
+#define CSTRING_VERSION_MINOR_OF(v) \
+    (((v) >> __CSTRING_VERSION_MINOR_SHIFT) & __CSTRING_VERSION_MINOR_MASK)
+
+#define CSTRING_VERSION_PATCH_OF(v) \
+    (((v) >> __CSTRING_VERSION_PATCH_SHIFT) & __CSTRING_VERSION_PATCH_MASK)
+
+#define CSTRING_VERSION \
+    CSTRING_VERSION_MAKE(CSTRING_VERSION_MAJOR, \
+                         CSTRING_VERSION_MINOR, \
+                         CSTRING_VERSION_PATCH)
+
+#define CSTRING_VERSION_STRING \
+    (__CSTRING_STRINGIFY(CSTRING_VERSION_MAJOR) "." \
+     __CSTRING_STRINGIFY(CSTRING_VERSION_MINOR) "." \
+     __CSTRING_STRINGIFY(CSTRING_VERSION_PATCH))
+
 #endif

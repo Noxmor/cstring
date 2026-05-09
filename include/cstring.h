@@ -150,7 +150,7 @@ void cstring_set(cstring_t* str, char c, size_t idx);
 // | COMPARISON |
 // +------------+
 
-char cstring_compare(const cstring_t* str1, const cstring_t* str2);
+int cstring_compare(const cstring_t* str1, const cstring_t* str2);
 
 bool cstring_equals(const cstring_t* str1, const cstring_t* str2);
 
@@ -370,7 +370,7 @@ void cstring_set(cstring_t* str, char c, size_t idx)
 // | COMPARISON |
 // +------------+
 
-char cstring_compare(const cstring_t* str1, const cstring_t* str2)
+int cstring_compare(const cstring_t* str1, const cstring_t* str2)
 {
     for (size_t i = 0; i < str1->len; ++i)
     {

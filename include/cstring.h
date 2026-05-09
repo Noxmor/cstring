@@ -132,6 +132,12 @@ const char* cstring_cstr(const cstring_t* str);
 
 char cstring_at(const cstring_t* str, size_t idx);
 
+// +--------+
+// | MEMORY |
+// +--------+
+
+void cstring_reserve(cstring_t* str, size_t capacity);
+
 #ifdef CSTRING_IMPLEMENTATION
 
 // ######################
@@ -235,6 +241,46 @@ char cstring_at(const cstring_t* str, size_t idx)
     }
 
     return str->data.heap[idx];
+}
+
+// +--------+
+// | MEMORY |
+// +--------+
+
+void cstring_reserve(cstring_t* str, size_t capacity)
+{
+    if (cstring_is_sso(str))
+    {
+        if (capacity > CSTRING_SSO_CAPACITY)
+        {
+            const size_t size = sizeof(char) * capacity;
+            char* heap = CSTRING_ALLOC(size);
+
+            if (!heap)
+            {
+                CSTRING_OOM_HANDLER(size);
+            }
+
+            memcpy(heap, str->data.sso, str->len + 1);
+
+            str->data.heap = heap;
+            str->capacity = capacity;
+        }
+    }
+    else
+    {
+        if (capacity > str->capacity)
+        {
+            const size_t size = sizeof(char) * capacity;
+            str->capacity = capacity;
+            str->data.heap = CSTRING_REALLOC(str->data.heap, size);
+
+            if (!str->data.heap)
+            {
+                CSTRING_OOM_HANDLER(size);
+            }
+        }
+    }
 }
 
 #endif

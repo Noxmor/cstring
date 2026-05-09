@@ -132,6 +132,12 @@ const char* cstring_cstr(const cstring_t* str);
 
 char cstring_at(const cstring_t* str, size_t idx);
 
+// +------------+
+// | COMPARISON |
+// +------------+
+
+char cstring_compare(const cstring_t* str1, const cstring_t* str2);
+
 // +--------+
 // | MEMORY |
 // +--------+
@@ -243,6 +249,25 @@ char cstring_at(const cstring_t* str, size_t idx)
     }
 
     return str->data.heap[idx];
+}
+
+// +------------+
+// | COMPARISON |
+// +------------+
+
+char cstring_compare(const cstring_t* str1, const cstring_t* str2)
+{
+    for (size_t i = 0; i < str1->len; ++i)
+    {
+        char char1 = cstring_at(str1, i);
+        char char2 = cstring_at(str2, i);
+        if (char1 != char2)
+        {
+            return char1 - char2;
+        }
+    }
+
+    return cstring_at(str1, str1->len) - cstring_at(str2, str2->len);
 }
 
 // +--------+

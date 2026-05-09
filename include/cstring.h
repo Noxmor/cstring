@@ -136,6 +136,8 @@ char cstring_at(const cstring_t* str, size_t idx);
 // | STRING MANIPULATION |
 // +---------------------+
 
+void cstring_append(cstring_t* dst, const cstring_t* src, size_t idx, size_t len);
+
 void cstring_set(cstring_t* str, char c, size_t idx);
 
 // +------------+
@@ -265,6 +267,63 @@ char cstring_at(const cstring_t* str, size_t idx)
     }
 
     return str->data.heap[idx];
+}
+
+// +---------------------+
+// | STRING MANIPULATION |
+// +---------------------+
+
+void cstring_append(cstring_t* dst, const cstring_t* src, size_t idx, size_t len)
+{
+    const size_t required_capacity = dst->len + len + 1;
+
+    const char* src_buf = cstring_cstr(src) + idx;
+
+    if (cstring_is_sso(dst))
+    {
+        if (required_capacity > CSTRING_SSO_CAPACITY)
+        {
+            const size_t size = sizeof(char) * required_capacity;
+            char* heap = CSTRING_ALLOC(size);
+
+            if (!heap)
+            {
+                CSTRING_OOM_HANDLER(size);
+            }
+
+            memcpy(heap, dst->data.sso, dst->len);
+            memcpy(heap + dst->len, src_buf, len);
+            dst->data.heap = heap;
+            dst->capacity = required_capacity;
+            dst->len += len;
+            dst->data.heap[dst->len] = '\0';
+        }
+        else
+        {
+            memcpy(dst->data.sso + dst->len, src_buf, len);
+            dst->len += len;
+            dst->data.sso[dst->len] = '\0';
+        }
+    }
+    else
+    {
+        if (required_capacity > dst->capacity)
+        {
+            const size_t size = sizeof(char) * required_capacity;
+            dst->capacity = required_capacity;
+            dst->data.heap = CSTRING_REALLOC(dst->data.heap, size);
+
+            if (!dst->data.heap)
+            {
+                CSTRING_OOM_HANDLER(size);
+            }
+        }
+
+        memcpy(dst->data.heap + dst->len, src_buf, len);
+        dst->len += len;
+        dst->data.heap[dst->len] = '\0';
+    }
+
 }
 
 void cstring_set(cstring_t* str, char c, size_t idx)

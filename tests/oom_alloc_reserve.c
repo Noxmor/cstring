@@ -1,0 +1,22 @@
+#include <stddef.h>
+static void oom_handler(size_t size);
+
+#define CSTRING_OOM_HANDLER(size) oom_handler(size)
+#define CSTRING_ALLOC(size) NULL
+#include "test.h"
+
+int main()
+{
+    cstring_t str = cstring_empty();
+    cstring_reserve(&str, CSTRING_SSO_CAPACITY * 2);
+
+    return EXIT_FAILURE;
+}
+
+static void oom_handler(size_t size)
+{
+    TEST_ASSERT(size == CSTRING_SSO_CAPACITY * 2);
+
+    exit(EXIT_SUCCESS);
+}
+

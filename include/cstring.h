@@ -146,6 +146,8 @@ bool cstring_equals(const cstring_t* str1, const cstring_t* str2);
 
 void cstring_to_lower(cstring_t* str);
 
+void cstring_to_upper(cstring_t* str);
+
 // +--------+
 // | MEMORY |
 // +--------+
@@ -296,6 +298,19 @@ void cstring_to_lower(cstring_t* str)
         if (c >= 'A' && c <= 'Z')
         {
             cstring_set(str, c + ('a' - 'A'), i);
+        }
+    }
+}
+
+void cstring_to_upper(cstring_t* str)
+{
+    for (size_t i = 0; i < str->len; ++i)
+    {
+        const char c = cstring_at(str, i);
+
+        if (c >= 'a' && c <= 'z')
+        {
+            cstring_set(str, c - ('a' - 'A'), i);
         }
     }
 }

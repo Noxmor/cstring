@@ -115,6 +115,8 @@ cstring_t cstring_from(const char* str);
 
 size_t cstring_len(const cstring_t* str);
 
+size_t cstring_capacity(const cstring_t* str);
+
 #ifdef CSTRING_IMPLEMENTATION
 
 // ######################
@@ -169,6 +171,11 @@ cstring_t cstring_from(const char* str)
 size_t cstring_len(const cstring_t* str)
 {
     return str->len;
+}
+
+size_t cstring_capacity(const cstring_t* str)
+{
+    return str->capacity;
 }
 
 #endif

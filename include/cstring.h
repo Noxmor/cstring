@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 // ##################
 // ### PUBLIC API ###
@@ -117,6 +118,8 @@ size_t cstring_len(const cstring_t* str);
 
 size_t cstring_capacity(const cstring_t* str);
 
+bool cstring_is_sso(const cstring_t* str);
+
 #ifdef CSTRING_IMPLEMENTATION
 
 // ######################
@@ -176,6 +179,11 @@ size_t cstring_len(const cstring_t* str)
 size_t cstring_capacity(const cstring_t* str)
 {
     return str->capacity;
+}
+
+bool cstring_is_sso(const cstring_t* str)
+{
+    return str->capacity <= CSTRING_SSO_CAPACITY;
 }
 
 #endif

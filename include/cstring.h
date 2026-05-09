@@ -88,6 +88,8 @@ typedef uint32_t cstring_version_t;
 // | STRING |
 // +--------+
 
+#define CSTRING_NOT_FOUND SIZE_MAX
+
 #ifndef CSTRING_SSO_CAPACITY
 #define CSTRING_SSO_CAPACITY sizeof(char*)
 #endif
@@ -151,6 +153,12 @@ void cstring_set(cstring_t* str, char c, size_t idx);
 char cstring_compare(const cstring_t* str1, const cstring_t* str2);
 
 bool cstring_equals(const cstring_t* str1, const cstring_t* str2);
+
+// +--------+
+// | SEARCH |
+// +--------+
+
+size_t cstring_find_char(const cstring_t* str, char c);
 
 // +------------+
 // | SUBSTRINGS |
@@ -380,6 +388,25 @@ char cstring_compare(const cstring_t* str1, const cstring_t* str2)
 bool cstring_equals(const cstring_t* str1, const cstring_t* str2)
 {
     return cstring_compare(str1, str2) == 0;
+}
+
+// +--------+
+// | SEARCH |
+// +--------+
+
+size_t cstring_find_char(const cstring_t* str, char c)
+{
+    const char* buf = cstring_cstr(str);
+
+    for (size_t i = 0; i < str->len; ++i)
+    {
+        if (buf[i] == c)
+        {
+            return i;
+        }
+    }
+
+    return CSTRING_NOT_FOUND;
 }
 
 // +------------+

@@ -56,4 +56,28 @@ typedef uint32_t cstring_version_t;
      __CSTRING_STRINGIFY(CSTRING_VERSION_MINOR) "." \
      __CSTRING_STRINGIFY(CSTRING_VERSION_PATCH))
 
+// +-----------------+
+// | CUSTOM HANDLERS |
+// +-----------------+
+
+#ifndef CSTRING_ALLOC
+#include <stdlib.h>
+#define CSTRING_ALLOC(size) malloc(size)
+#endif
+
+#ifndef CSTRING_REALLOC
+#include <stdlib.h>
+#define CSTRING_REALLOC(ptr, size) realloc(ptr, size)
+#endif
+
+#ifndef CSTRING_FREE
+#include <stdlib.h>
+#define CSTRING_FREE(ptr) free(ptr)
+#endif
+
+#ifndef CSTRING_OOM_HANDLER
+#include <stdlib.h>
+#define CSTRING_OOM_HANDLER(size) abort()
+#endif
+
 #endif

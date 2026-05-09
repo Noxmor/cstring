@@ -138,6 +138,8 @@ char cstring_at(const cstring_t* str, size_t idx);
 
 char cstring_compare(const cstring_t* str1, const cstring_t* str2);
 
+bool cstring_equals(const cstring_t* str1, const cstring_t* str2);
+
 // +--------+
 // | MEMORY |
 // +--------+
@@ -268,6 +270,11 @@ char cstring_compare(const cstring_t* str1, const cstring_t* str2)
     }
 
     return cstring_at(str1, str1->len) - cstring_at(str2, str2->len);
+}
+
+bool cstring_equals(const cstring_t* str1, const cstring_t* str2)
+{
+    return cstring_compare(str1, str2) == 0;
 }
 
 // +--------+

@@ -109,6 +109,12 @@ cstring_t cstring_empty(void);
 
 cstring_t cstring_from(const char* str);
 
+// +------------+
+// | PROPERTIES |
+// +------------+
+
+size_t cstring_len(const cstring_t* str);
+
 #ifdef CSTRING_IMPLEMENTATION
 
 // ######################
@@ -154,6 +160,15 @@ cstring_t cstring_from(const char* str)
     }
 
     return s;
+}
+
+// +------------+
+// | PROPERTIES |
+// +------------+
+
+size_t cstring_len(const cstring_t* str)
+{
+    return str->len;
 }
 
 #endif

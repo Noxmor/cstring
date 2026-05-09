@@ -150,6 +150,12 @@ char cstring_compare(const cstring_t* str1, const cstring_t* str2);
 
 bool cstring_equals(const cstring_t* str1, const cstring_t* str2);
 
+// +------------+
+// | SUBSTRINGS |
+// +------------+
+
+cstring_t cstring_substring(const cstring_t* str, size_t idx, size_t len);
+
 // +-----------------+
 // | CASE CONVERSION |
 // +-----------------+
@@ -372,6 +378,19 @@ char cstring_compare(const cstring_t* str1, const cstring_t* str2)
 bool cstring_equals(const cstring_t* str1, const cstring_t* str2)
 {
     return cstring_compare(str1, str2) == 0;
+}
+
+// +------------+
+// | SUBSTRINGS |
+// +------------+
+
+cstring_t cstring_substring(const cstring_t* str, size_t idx, size_t len)
+{
+    cstring_t substr = cstring_empty();
+
+    cstring_append(&substr, str, idx, len);
+
+    return substr;
 }
 
 // +-----------------+

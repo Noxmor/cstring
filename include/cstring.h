@@ -107,11 +107,16 @@ typedef struct cstring
 
 cstring_t cstring_empty(void);
 
+cstring_t cstring_from(const char* str);
+
 #ifdef CSTRING_IMPLEMENTATION
 
 // ######################
 // ### IMPLEMENTATION ###
 // ######################
+
+#include <stdlib.h>
+#include <string.h>
 
 // +----------------------------+
 // | CONSTRUCTION / DESTRUCTION |
@@ -123,6 +128,32 @@ cstring_t cstring_empty(void)
     str.capacity = CSTRING_SSO_CAPACITY;
 
     return str;
+}
+
+cstring_t cstring_from(const char* str)
+{
+    cstring_t s = cstring_empty();
+
+    s.len = strlen(str);
+    if (s.len + 1 > CSTRING_SSO_CAPACITY)
+    {
+        s.capacity = s.len + 1;
+        const size_t size = sizeof(char) * s.capacity;
+        s.data.heap = CSTRING_ALLOC(size);
+
+        if (!s.data.heap)
+        {
+            CSTRING_OOM_HANDLER(size);
+        }
+
+        memcpy(s.data.heap, str, s.capacity);
+    }
+    else
+    {
+        memcpy(s.data.sso, str, s.len + 1);
+    }
+
+    return s;
 }
 
 #endif

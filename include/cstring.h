@@ -1,6 +1,7 @@
 #ifndef CSTRING_H
 #define CSTRING_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 // ##################
@@ -79,5 +80,25 @@ typedef uint32_t cstring_version_t;
 #include <stdlib.h>
 #define CSTRING_OOM_HANDLER(size) abort()
 #endif
+
+// +--------+
+// | STRING |
+// +--------+
+
+#ifndef CSTRING_SSO_CAPACITY
+#define CSTRING_SSO_CAPACITY sizeof(char*)
+#endif
+
+typedef struct cstring
+{
+    size_t len;
+    size_t capacity;
+
+    union
+    {
+        char* heap;
+        char sso[CSTRING_SSO_CAPACITY];
+    } data;
+} cstring_t;
 
 #endif

@@ -140,6 +140,12 @@ char cstring_compare(const cstring_t* str1, const cstring_t* str2);
 
 bool cstring_equals(const cstring_t* str1, const cstring_t* str2);
 
+// +-----------------+
+// | CASE CONVERSION |
+// +-----------------+
+
+void cstring_to_lower(cstring_t* str);
+
 // +--------+
 // | MEMORY |
 // +--------+
@@ -275,6 +281,23 @@ char cstring_compare(const cstring_t* str1, const cstring_t* str2)
 bool cstring_equals(const cstring_t* str1, const cstring_t* str2)
 {
     return cstring_compare(str1, str2) == 0;
+}
+
+// +-----------------+
+// | CASE CONVERSION |
+// +-----------------+
+
+void cstring_to_lower(cstring_t* str)
+{
+    for (size_t i = 0; i < str->len; ++i)
+    {
+        const char c = cstring_at(str, i);
+
+        if (c >= 'A' && c <= 'Z')
+        {
+            cstring_set(str, c + ('a' - 'A'), i);
+        }
+    }
 }
 
 // +--------+

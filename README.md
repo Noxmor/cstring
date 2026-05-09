@@ -13,3 +13,16 @@ following:
 ```c
 #include <cstring.h>
 ```
+
+## Usage
+Since `cstring.h` is a `single-header library` where the implementation details
+reside in the same file, you will have to exactly **once** define the
+`CSTRING_IMPLEMENTATION` macro **before** including `cstring.h` in exactly
+**one** translation unit.
+
+### Example
+```c
+// cstring.c
+#define CSTRING_IMPLEMENTATION
+#include <cstring.h>
+```

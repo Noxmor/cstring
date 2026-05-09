@@ -101,4 +101,12 @@ typedef struct cstring
     } data;
 } cstring_t;
 
+#ifdef CSTRING_IMPLEMENTATION
+
+// ######################
+// ### IMPLEMENTATION ###
+// ######################
+
+#endif
+
 #endif

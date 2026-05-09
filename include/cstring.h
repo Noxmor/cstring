@@ -138,6 +138,8 @@ char cstring_at(const cstring_t* str, size_t idx);
 
 void cstring_reserve(cstring_t* str, size_t capacity);
 
+void cstring_shrink_to_fit(cstring_t* str);
+
 #ifdef CSTRING_IMPLEMENTATION
 
 // ######################
@@ -279,6 +281,33 @@ void cstring_reserve(cstring_t* str, size_t capacity)
             {
                 CSTRING_OOM_HANDLER(size);
             }
+        }
+    }
+}
+
+void cstring_shrink_to_fit(cstring_t* str)
+{
+    if (cstring_is_sso(str))
+    {
+        return;
+    }
+
+    if (str->len < CSTRING_SSO_CAPACITY)
+    {
+        char* heap = str->data.heap;
+        memcpy(str->data.sso, heap, str->len + 1);
+        str->capacity = CSTRING_SSO_CAPACITY;
+        free(heap);
+    }
+    else if (str->capacity > str->len + 1)
+    {
+        const size_t capacity = sizeof(char) * (str->len + 1);
+        str->data.heap = CSTRING_REALLOC(str->data.heap, capacity);
+        str->capacity = capacity;
+
+        if (!str->data.heap)
+        {
+            CSTRING_OOM_HANDLER(capacity);
         }
     }
 }

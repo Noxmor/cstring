@@ -132,6 +132,12 @@ const char* cstring_cstr(const cstring_t* str);
 
 char cstring_at(const cstring_t* str, size_t idx);
 
+// +---------------------+
+// | STRING MANIPULATION |
+// +---------------------+
+
+void cstring_set(cstring_t* str, char c, size_t idx);
+
 // +------------+
 // | COMPARISON |
 // +------------+
@@ -259,6 +265,23 @@ char cstring_at(const cstring_t* str, size_t idx)
     }
 
     return str->data.heap[idx];
+}
+
+void cstring_set(cstring_t* str, char c, size_t idx)
+{
+    if (idx >= str->len)
+    {
+        return;
+    }
+
+    if (cstring_is_sso(str))
+    {
+        str->data.sso[idx] = c;
+    }
+    else
+    {
+        str->data.heap[idx] = c;
+    }
 }
 
 // +------------+

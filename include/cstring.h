@@ -138,6 +138,8 @@ char cstring_at(const cstring_t* str, size_t idx);
 
 void cstring_append(cstring_t* dst, const cstring_t* src, size_t idx, size_t len);
 
+void cstring_concat(cstring_t* dst, const cstring_t* src);
+
 void cstring_set(cstring_t* str, char c, size_t idx);
 
 // +------------+
@@ -324,6 +326,11 @@ void cstring_append(cstring_t* dst, const cstring_t* src, size_t idx, size_t len
         dst->data.heap[dst->len] = '\0';
     }
 
+}
+
+void cstring_concat(cstring_t* dst, const cstring_t* src)
+{
+    cstring_append(dst, src, 0, cstring_len(src));
 }
 
 void cstring_set(cstring_t* str, char c, size_t idx)

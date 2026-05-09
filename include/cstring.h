@@ -101,11 +101,29 @@ typedef struct cstring
     } data;
 } cstring_t;
 
+// +----------------------------+
+// | CONSTRUCTION / DESTRUCTION |
+// +----------------------------+
+
+cstring_t cstring_empty(void);
+
 #ifdef CSTRING_IMPLEMENTATION
 
 // ######################
 // ### IMPLEMENTATION ###
 // ######################
+
+// +----------------------------+
+// | CONSTRUCTION / DESTRUCTION |
+// +----------------------------+
+
+cstring_t cstring_empty(void)
+{
+    cstring_t str = {0};
+    str.capacity = CSTRING_SSO_CAPACITY;
+
+    return str;
+}
 
 #endif
 

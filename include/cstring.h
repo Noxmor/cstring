@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Noxmor
+
 #ifndef CSTRING_H
 #define CSTRING_H
 

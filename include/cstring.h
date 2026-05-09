@@ -110,6 +110,8 @@ cstring_t cstring_empty(void);
 
 cstring_t cstring_from(const char* str);
 
+cstring_t cstring_copy(const cstring_t* str);
+
 void cstring_free(cstring_t* str);
 
 // +------------+
@@ -173,6 +175,11 @@ cstring_t cstring_from(const char* str)
     }
 
     return s;
+}
+
+cstring_t cstring_copy(const cstring_t* str)
+{
+    return cstring_from(cstring_cstr(str));
 }
 
 void cstring_free(cstring_t* str)
